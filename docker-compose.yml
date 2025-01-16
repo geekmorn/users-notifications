@@ -1,0 +1,61 @@
+version: "3.9"
+
+name: users-test-task
+
+services:
+    users:
+        build:
+            context: users/.
+            target: production
+        env_file:
+            - .env
+        restart: always
+        depends_on:
+            - rabbitmq
+            - mongo-db
+        ports:
+            - 3000:${USERS_APP_PORT}
+        command: node dist/main
+
+    notifications:
+        build:
+            context: notifications/.
+            target: production
+        env_file:
+            - .env
+        restart: always
+        depends_on:
+            - rabbitmq
+        expose:
+            - "${NOTIFICATIONS_APP_PORT}"
+        command: node dist/main
+
+    mongo-db:
+        image: mongo:latest
+        restart: always
+        expose:
+            - "${USERS_MONGO_PORT}"
+        ports:
+            - 27017:${USERS_MONGO_PORT}
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${USERS_MONGO_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${USERS_MONGO_PASS}
+        volumes:
+            - mongo-data:/data/db
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        environment:
+            - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+            - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+    mongo-data:
+    rabbitmq_data:

@@ -1,0 +1,14 @@
+app/.classpath
+app/.dockerignore
+app/.prettierrc.json
+app/.eslintrc.js
+app/.gitignore
+app/nest-cli.json
+app/node_modules
+app/*.jfm
+app/dist
+README.md
+.env
+.git
+.vs
+.vscode
