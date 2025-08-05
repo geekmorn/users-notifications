@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync(RabbitMQModule, {
+    RabbitMQModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         exchanges: [
           {
