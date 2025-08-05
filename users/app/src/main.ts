@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder().setTitle('Users test task').build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('swagger', app, documentFactory)
+  SwaggerModule.setup('', app, documentFactory)
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   await app.listen(port)
