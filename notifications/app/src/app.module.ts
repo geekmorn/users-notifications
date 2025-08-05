@@ -9,7 +9,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
       isGlobal: true,
       envFilePath: '../../.env',
     }),
-    RabbitMQModule.forRootAsync(RabbitMQModule, {
+    RabbitMQModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         exchanges: [
           {
